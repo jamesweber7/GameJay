@@ -36,7 +36,6 @@
 
                     <div class="mb-4">
                         Simple Description:
-
                         <button type="button" onmouseover="focus(this)" class="help-icon-2 nice-input-1 mb-1">
                             <x-vaadin-question class="help-icon-1-mark"/>
                             <span class="help-tooltip-1">A simple description of your game that will help gamers decide to play it! Great hooks help games get played! (Max 150 characters)</span>
