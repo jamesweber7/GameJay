@@ -15,8 +15,10 @@
         <link rel="icon" href={{asset("favicon2.ico")}}>
         @if (Route::currentRouteName()==='search')
             <title>'{{urldecode(str_replace(url()->current().'?qry=', '', url()->full()))}}' Search Results</title>
+        @elseif (Route::currentRouteName()==='about')
+            <title>About GameJay</title>
         @elseif (Route::currentRouteName()==='home')
-            <title>Game Jay</title>
+            <title>GameJay</title>
         @else
             <title>{{ucwords(str_replace('_', ' ', Route::currentRouteName()))}}</title>
         @endif
@@ -31,7 +33,7 @@
                 <a href="{{ route('home') }}" class="p-3">Home</a>
             </li>
             <li>
-                <a href="{{ route('dashboard') }}" class="p-3">Dashboard</a>
+                <a href="{{ route('about') }}" class="p-3">About</a>
             </li>
         </ul>
 
@@ -78,24 +80,4 @@
     </div>
     
 </body>
-<footer class="mb-0 pb-0 mt-20" style="background-color:#ffffff;">
-    <nav class="p-10 bg-white flex justify-between mb-0 text-xl" style="background-color:rgb(162, 221, 255);">
-        <ul class="flex items-center">
-            <li>
-                <a href="{{ route('about') }}" class="p-3">About</a>
-            </li>
-            <li>
-                <a href="{{ route('help') }}" class="p-3">Help</a>
-            </li>
-        </ul>
-
-        <ul class="flex items-center">
- 
-            <li>
-                <a href="{{ route('contact_us') }}" class="p-3">Contact Us</a>
-            </li>
-            
-        </ul>
-    </nav>
-</footer>
 </html>

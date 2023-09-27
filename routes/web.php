@@ -5,12 +5,14 @@ use App\Http\Controllers\UserPostController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\EditGameController;
 use App\Http\Controllers\ErrorPageController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GameLikeController;
 use App\Http\Controllers\GameStatsController;
+use App\Http\Controllers\GameStudioController;
 use App\Http\Controllers\HelperPageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
@@ -26,9 +28,7 @@ use Illuminate\Http\Request;
 
 
 // home
-Route::any('/', function() {
-    return view('home');
-})->name('home');
+Route::any('/', [HomeController::class, 'index'])->name('home');
 
 // dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -45,6 +45,9 @@ Route::get('/game/{author_username}/{name}', [GameController::class, 'index'])->
 // upload game
 Route::get('/upload-game', [UploadGameController::class, 'index'])->name('upload_game');
 Route::post('/upload-game', [UploadGameController::class, 'store']);
+
+// studio
+Route::get('/studio', [GameStudioController::class, 'index'])->name('studio');
 
 // edit game
 Route::get('/edit/{author_username}/{name}', [EditGameController::class, 'index'])->name('edit_game');
@@ -71,7 +74,8 @@ Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
 // general
 Route::get('/contact-us', [ContactFormController::class, 'contact'])->name('contact_us');
 Route::get('/report-issue', [ContactFormController::class, 'report'])->name('report_issue');
-Route::get('/about', [HelperPageController::class, 'about'])->name('about');
+// Route::get('/about', [HelperPageController::class, 'about'])->name('about');
+Route::view('/about', 'about')->name('about');
 Route::get('/help', [HelperPageController::class, 'help'])->name('help');
 Route::get('/coming-soon', [HelperPageController::class, 'comingSoon'])->name('coming_soon');
 Route::get('/coming-soon/{page}', [HelperPageController::class, 'comingSoon'])->name('coming_soon');

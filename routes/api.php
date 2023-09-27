@@ -27,5 +27,6 @@ Route::post('/likes/{game:id}/{user_id}', [GameLikeApiController::class, 'store'
 Route::delete('/likes/{game:id}/{user_id}', [GameLikeApiController::class, 'destroy'])->name('game.likes');
 
 Route::get('/comments', [GameCommentApiController::class, 'index'])->name('game.comments');
-Route::post('/comments/{game:id}/{user_id}/{comment_body}', [GameCommentApiController::class, 'store'])->name('game.comments');
-Route::delete('/comments/{game:id}/{user_id}/{comment_body}', [GameCommentApiController::class, 'destroy'])->name('game.comments');
+Route::post('/comments/{game:id}/{user_id}/{comment_body}', [GameCommentApiController::class, 'store'])->name('game.post-comment');
+Route::put('/comments/{game:id}/{user_id}/{comment_body}', [GameCommentApiController::class, 'update'])->name('game.update-comment');
+Route::delete('/comments/{comment_id}', [GameCommentApiController::class, 'destroy'])->name('game.destroy-comment');

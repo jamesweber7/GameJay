@@ -14,12 +14,18 @@ START JAMES ADDITIONS
 
 :root {
   --jay-blue: rgb(162, 221, 255);
+  --jay-blue-lighter: #C2E9FF;
   --jay-blue-deeper: rgb(23, 170, 255);
   --jay-deep-blue-gray: #577485;
 
   --div-dark: #242424;
   --div-dark-lighter: #5E5E5E;
   --div-dark-darker: #1E1E1E;
+  --div-dark-darker-2: #1A1A1A;
+  --div-gray-1: #444;
+  --div-gray-2: #393939;
+  --div-gray-3: #333;
+
 
   --site-background: #1A1A1F;
   --placeholder-on-jay: #695e5e;
@@ -28,6 +34,29 @@ START JAMES ADDITIONS
 
   --top-nav-height: 136px;
   --bottom-nav-height: 128px;
+}
+
+.gj-h {
+  font-family: Arial Black;
+  font-weight: bold;
+  display: block;
+}
+
+gj-h1 {
+  margin: 40px;
+  font-size: 30px;
+  font-family: Arial Black;
+  font-weight: bold;
+  display: block;
+}
+
+gj-h2 {
+  margin: 30px;
+  margin-left: 60px;
+  font-size: 26px;
+  font-family: Arial Black;
+  font-weight: bold;
+  display: block;
 }
 
 /* Customize the label (the container) */
@@ -805,6 +834,49 @@ textarea {
   margin-top: 0;
   border-bottom: 2px solid black;
   padding:20px;
+}
+
+.comment-submit:disabled {
+  color: var(--jay-deep-blue-gray);
+  cursor: default;
+}
+
+.comment-edit-icon {
+  width: 20px;
+  margin-left: 5px;
+  position:relative;
+  top:3px;
+  transition: 0.18s;
+}
+
+.comment-edit-icon:hover {
+  transform: scale(1.1);
+  color: #eee;
+}
+
+.comment-body {
+  display: block;
+  word-break:break-word;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--div-dark-lighter);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--div-gray-3);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--div-gray-2);
 }
 
 /**

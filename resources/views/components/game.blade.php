@@ -2,7 +2,7 @@
 @section('content')
 
     <div class="outside-1">
-        <div class="cool-card-1 mb-4 pb-8" id='game-card' style="width:{{$game->width}}px;min-width:400px;height:calc({{$game->height}}px + 300px);overflow:hidden;position:relative;">
+        <div class="cool-card-1 mb-4 pb-8" id='game-card' style="width:{{$game->width}}px;min-width:400px;height:calc({{$game->height}}px + 300px);border-radius:0 0 5px 5px;overflow:hidden;position:relative;">
             <iframe
                 id="gameframe"
                 src={{ asset($game->source) }}
@@ -24,7 +24,7 @@
 
                 <div id='liker-container' style="display:inline-block;margin-top:5px;resize:horizontal;position:relative;top:8px;">
                     <div id='game-liker' class="hidden">
-                        <form action="xhrDeleteLike" id="game-like-form" method="post">
+                        <form action="xhrPostLike" id="game-like-form" method="post">
                             @csrf
                             <button class="bold-btn-1 scale-up-effect" style="resize:horizontal;">
                                 <div style="width:35px;margin:0;padding:0;display:inline-block;position:relative;top:3px;">
@@ -38,7 +38,7 @@
                     </div>
 
                     <div id='game-unliker' class="hidden">
-                        <form action="xhrPostLike" id="game-unlike-form" method="post">
+                        <form action="xhrDeleteLike" id="game-unlike-form" method="post">
                             @csrf
                             @method('DELETE')
                             <button class="bold-btn-1 scale-up-effect" style="background-color:var(--jay-blue);color:black;resize:horizontal;">
@@ -179,52 +179,79 @@
                 Comments:
             </div>
 
-            <form action="xhrPostComment" enctype="multipart/form-data" id="game-comment-form" method="post">
+            <form action="xhrPostComment" id="game-comment-form" method="post">
                 @csrf
                 <div class="nice-input-2 neon-border-1 comment-div" style="margin-top:0;">
                     <label for="comment_body" class="sr-only"></label>
                     <textarea id='comment_body' name='comment_body' class="comment-textarea" maxlength="1000" placeholder="Write a comment as {{auth()->user()->username}}..."></textarea>
-                    <button id="comment-submit" style="display:flex;">
+                    <button id="comment-submit" class='comment-submit' style="display:flex;outline:none;" disabled>
                         Submit
                     </button>
-                </div>
+                </div>            
             </form>
 
+            <div id='append-comment-bank'></div>
 
+            <script type='text/javascript'>
+                var commentId;
+            </script>
+
+            @foreach ($game->orderedComments as $comment)
+                <x-comment_card :comment="$comment" />
+            @endforeach
+
+            <script src="{{asset('js/gameCommenter.js')}}"></script>
             <script>
         
                 document.getElementById('game-comment-form').addEventListener('submit', xhrPostComment);
 
+                const commentTextarea = document.getElementById('comment_body');
                 function commentBody() {
-                    return document.getElementById('comment_body').value;
+                    return commentTextarea.value;
                 }
+
                 function xhrPostComment(e) {
                     e.preventDefault();
-                    
-                    <?php echo "let base_route = 'localhost:3000';";?>
-
-                    console.log(base_route);
-
-                    // Create XHR Object
-                    var xhr = new XMLHttpRequest();
-                    // open : type, url, isAsync
-                    '<?php $xhrUrl="OO" ?>'
-                    xhr.open('POST', '<?php echo Route("game.comments", [$game, auth()->id(), commentBody()]); ?>', true);
-                    xhr.onload = function() {
-                        if (this.status !== 200) {
-                            console.log(this.statusText);
+                    var comment = commentBody();
+                    resetTextarea();
+                    if (commentIsValid(comment)) {
+                        addComment(comment, "<?php echo auth()->user()->username; ?>", "<?php echo auth()->user()->image(); ?>", "<?php echo route('user', auth()->user()->username); ?>");
+                        // Create XHR Object
+                        var xhr = new XMLHttpRequest();
+                        // open : type, url, isAsync
+                        var route = "<?php echo Route('game.post-comment', [$game, auth()->id(), '']); ?>";
+                        console.log(route);
+                        route += `/${encodeURIComponent(comment)}`;
+                        console.log(route);
+                        xhr.open('POST', route, true);
+                        xhr.onload = function() {
+                            if (this.status !== 200) {
+                                console.log(this.statusText);
+                            }
                         }
+                        xhr.send();
                     }
-        
-                    xhr.send();
 
+                }
+
+                const commentSubmitButton = document.getElementById('comment-submit');
+                commentTextarea.addEventListener('input', controlSubmitButton);
+                function controlSubmitButton() {
+                    if (commentIsValid(commentBody())) {
+                        commentSubmitButton.removeAttribute('disabled');
+                    } else {
+                        commentSubmitButton.setAttribute('disabled', true);
+                    }
+                    commentTextarea.style.height = 'auto';
+                    commentTextarea.style.height = commentTextarea.scrollHeight + 'px';
+                }
+
+                function resetTextarea() {
+                    commentTextarea.value = '';
+                    commentTextarea.style.height = 'auto';
                 }
                 
             </script>
-
-            @foreach ($game->comments as $comment)
-                <x-comment_card :comment="$comment" />
-            @endforeach
 
         </div>
     </div>

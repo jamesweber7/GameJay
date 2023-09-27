@@ -76,6 +76,10 @@ class Game extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function orderedComments() {
+        return $this->comments()->orderByDesc('updated_at');
+    }
+
     public function cover_picture() {
         return $this->picture(0);
     }
